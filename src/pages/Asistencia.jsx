@@ -75,18 +75,6 @@ const Asistencia = () => {
         setParticipantes(participantes.map(p =>
           p.id === selectedParticipante.id ? { ...p, asistencia: true } : p
         ))
-      } else {
-        // Mark as absent - API might not support this yet, so we just warn or do nothing
-        // For now, we will update local state but warn user that it might not persist if API doesn't support delete
-        // alert("La función de 'Marcar Ausente' depende de la API. Se actualizará localmente.")
-        
-        // TODO: Implement delete attendance if API supports it
-        // await attendanceService.deleteAttendance(selectedParticipante.id)
-        
-        // For now, just update local state to reflect the action in UI
-         setParticipantes(participantes.map(p =>
-          p.id === selectedParticipante.id ? { ...p, asistencia: false } : p
-        ))
       }
       setModalOpen(false)
       setSelectedParticipante(null)
@@ -115,7 +103,7 @@ const Asistencia = () => {
             </div>
             <div className="modal-body">
               <p className="modal-text">
-                ¿Estás seguro de que deseas marcar como <strong>{selectedParticipante.asistencia ? 'Ausente' : 'Presente'}</strong> a <strong>{selectedParticipante.name}</strong>?
+                ¿Estás seguro de que deseas marcar como <strong>Presente</strong> a <strong>{selectedParticipante.name}</strong>?
               </p>
             </div>
             <div className="modal-footer">
@@ -126,7 +114,7 @@ const Asistencia = () => {
                 Cancelar
               </button>
               <button 
-                className={`btn ${selectedParticipante.asistencia ? 'btn-danger' : 'btn-success'}`}
+                className="btn btn-success"
                 onClick={confirmToggleAsistencia}
               >
                 Confirmar
@@ -217,20 +205,14 @@ const Asistencia = () => {
                   </span>
                 </td>
                 <td>
-                  <button
-                    className={`btn btn-sm ${participante.asistencia ? 'btn-secondary' : 'btn-primary'}`}
-                    onClick={() => handleToggleAsistencia(participante)}
-                  >
-                    {participante.asistencia ? (
-                      <>
-                        <FiXCircle /> Marcar Ausente
-                      </>
-                    ) : (
-                      <>
-                        <FiCheckCircle /> Marcar Asistencia
-                      </>
-                    )}
-                  </button>
+                  {!participante.asistencia && (
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={() => handleToggleAsistencia(participante)}
+                    >
+                      <FiCheckCircle /> Marcar Asistencia
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
