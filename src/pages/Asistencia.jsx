@@ -29,7 +29,6 @@ const Asistencia = () => {
           dni: reg.documentNumber,
           email: reg.email,
           tipo: reg.type === 'PROFESSIONAL' ? 'Profesional' : 'Estudiante',
-          certificado: 'No', // API doesn't seem to have certificate status yet
           asistencia: !!reg.attendance
         }
       })
@@ -199,7 +198,6 @@ const Asistencia = () => {
               <th>DNI</th>
               <th>Email</th>
               <th>Tipo</th>
-              <th>Certificado</th>
               <th>Asistencia</th>
               <th>Acción</th>
             </tr>
@@ -212,11 +210,6 @@ const Asistencia = () => {
                 <td>{participante.email}</td>
                 <td>
                   <span className={`badge ${participante.tipo === 'Profesional' ? 'badge-purple' : 'badge-info'}`}>{participante.tipo}</span>
-                </td>
-                <td>
-                  <span className={`badge ${participante.certificado === 'Sí' ? 'badge-success' : 'badge-gray'}`}>
-                    {participante.certificado}
-                  </span>
                 </td>
                 <td>
                   <span className={`badge ${participante.asistencia ? 'badge-success' : 'badge-danger'}`}>
