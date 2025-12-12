@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   Chart as ChartJS, 
   CategoryScale, 
@@ -10,6 +10,7 @@ import {
 } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import { FiUsers, FiCheckCircle } from 'react-icons/fi'
+import { attendanceService } from '../services/attendanceService'
 import './Dashboard.css'
 
 ChartJS.register(
@@ -22,11 +23,73 @@ ChartJS.register(
 )
 
 const Dashboard = () => {
-  // Datos simulados
-  const totalParticipantes = 450
-  const asistieron = 414
-  const noAsistieron = 36
-  const tasaAsistencia = Math.round((asistieron / totalParticipantes) * 100)
+  const [stats, setStats] = useState({
+    totalParticipantes: 0,
+    asistieron: 0,
+    noAsistieron: 0,
+    tasaAsistencia: 0,
+    estudiantes: { total: 0, asistieron: 0 },
+    profesionales: { total: 0, asistieron: 0 }
+  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      setLoading(true)
+      const [registrations, attendanceRecords] = await Promise.all([
+        attendanceService.getParticipants(),
+        attendanceService.getAllAttendance()
+      ])
+
+      // Process data
+      const totalParticipantes = registrations.length
+      
+      // Determine attendance
+      // attendanceRecords might contain duplicates or multiple check-ins, we should unique by registrationId if needed
+      // But simpler is to check if ID exists in attendanceRecords
+      const attendeeIds = new Set(attendanceRecords.map(r => r.registrationId))
+      const asistieron = attendeeIds.size
+      const noAsistieron = totalParticipantes - asistieron
+      
+      // Breakdown by type
+      let estTotal = 0, estAsist = 0
+      let profTotal = 0, profAsist = 0
+
+      registrations.forEach(reg => {
+        const isStudent = reg.type === 'STUDENT'
+        const isProfessional = reg.type === 'PROFESSIONAL'
+        const isPresent = attendeeIds.has(reg.id)
+
+        if (isStudent) {
+          estTotal++
+          if (isPresent) estAsist++
+        } else if (isProfessional) {
+          profTotal++
+          if (isPresent) profAsist++
+        }
+      })
+
+      setStats({
+        totalParticipantes,
+        asistieron,
+        noAsistieron,
+        tasaAsistencia: totalParticipantes > 0 ? Math.round((asistieron / totalParticipantes) * 100) : 0,
+        estudiantes: { total: estTotal, asistieron: estAsist },
+        profesionales: { total: profTotal, asistieron: profAsist }
+      })
+
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err)
+      setError('Error al cargar datos del dashboard.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // 1. Gráfico de barras de asistencia (Asistieron vs No asistieron)
   const asistenciaGeneralData = {
@@ -34,7 +97,7 @@ const Dashboard = () => {
     datasets: [
       {
         label: 'Participantes',
-        data: [asistieron, noAsistieron],
+        data: [stats.asistieron, stats.noAsistieron],
         backgroundColor: ['#023E55', '#e2e8f0'],
         borderRadius: 8,
       },
@@ -47,13 +110,13 @@ const Dashboard = () => {
     datasets: [
       {
         label: 'Asistieron',
-        data: [250, 164],
+        data: [stats.estudiantes.asistieron, stats.profesionales.asistieron],
         backgroundColor: '#F7AF02',
         borderRadius: 4,
       },
       {
         label: 'Total',
-        data: [280, 170],
+        data: [stats.estudiantes.total, stats.profesionales.total],
         backgroundColor: '#023E55',
         borderRadius: 4,
       },
@@ -100,6 +163,9 @@ const Dashboard = () => {
     },
   }
 
+  if (loading) return <div className="loading-container">Cargando Dashboard...</div>
+  if (error) return <div className="error-container">{error}</div>
+
   return (
     <div className="dashboard">
       <h1 className="page-title">Dashboard</h1>
@@ -112,7 +178,7 @@ const Dashboard = () => {
           </div>
           <div className="stat-info">
             <span className="stat-label">Participantes</span>
-            <span className="stat-number">{totalParticipantes}</span>
+            <span className="stat-number">{stats.totalParticipantes}</span>
           </div>
         </div>
 
@@ -123,7 +189,7 @@ const Dashboard = () => {
           </div>
           <div className="stat-info">
             <span className="stat-label">Tasa de Asistencia</span>
-            <span className="stat-number">{tasaAsistencia}%</span>
+            <span className="stat-number">{stats.tasaAsistencia}%</span>
           </div>
         </div>
 

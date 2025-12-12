@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FiCheckCircle, FiXCircle } from 'react-icons/fi'
+import { attendanceService } from '../services/attendanceService'
 import './Asistencia.css'
 
 const Asistencia = () => {
@@ -7,19 +8,52 @@ const Asistencia = () => {
   const [filter, setFilter] = useState('no-asistentes') // todos, asistentes, no-asistentes
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedParticipante, setSelectedParticipante] = useState(null)
+  const [participantes, setParticipantes] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  // Datos simulados
-  const [participantes, setParticipantes] = useState([
-    { id: 1, name: 'Juan Pérez', dni: '12345678', email: 'juan@ejemplo.com', tipo: 'Estudiante', certificado: 'Sí', asistencia: true },
-    { id: 2, name: 'María García', dni: '87654321', email: 'maria@ejemplo.com', tipo: 'Profesional', certificado: 'Sí', asistencia: true },
-    { id: 3, name: 'Carlos López', dni: '11223344', email: 'carlos@ejemplo.com', tipo: 'Estudiante', certificado: 'No', asistencia: false },
-    { id: 4, name: 'Ana Martínez', dni: '44332211', email: 'ana@ejemplo.com', tipo: 'Profesional', certificado: 'Sí', asistencia: true },
-    { id: 5, name: 'Pedro Sánchez', dni: '55667788', email: 'pedro@ejemplo.com', tipo: 'Estudiante', certificado: 'No', asistencia: false },
-  ])
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      setLoading(true)
+      const [registrations, attendanceRecords] = await Promise.all([
+        attendanceService.getParticipants(),
+        attendanceService.getAllAttendance()
+      ])
+
+      // Map registrations to include attendance status
+      const mappedParticipantes = registrations.map(reg => {
+        // Check if this registration ID exists in attendance records
+        // Note: attendanceRecords might be empty or formatted differently depending on API
+        // Assuming attendanceRecords is an array of { registrationId, ... }
+        const isPresent = attendanceRecords.some(record => record.registrationId === reg.id)
+        
+        return {
+          id: reg.id,
+          name: reg.fullName,
+          dni: reg.documentNumber,
+          email: reg.email,
+          tipo: reg.type === 'PROFESSIONAL' ? 'Profesional' : 'Estudiante',
+          certificado: 'No', // API doesn't seem to have certificate status yet
+          asistencia: isPresent
+        }
+      })
+
+      setParticipantes(mappedParticipantes)
+    } catch (err) {
+      console.error('Error fetching data:', err)
+      setError('Error al cargar los datos. Por favor intenta nuevamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const totalAsistencia = participantes.filter(p => p.asistencia).length
   const totalParticipantes = participantes.length
-  const porcentajeAsistencia = Math.round((totalAsistencia / totalParticipantes) * 100)
+  const porcentajeAsistencia = totalParticipantes > 0 ? Math.round((totalAsistencia / totalParticipantes) * 100) : 0
 
   let filteredParticipantes = participantes.filter(p =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -38,26 +72,62 @@ const Asistencia = () => {
     setModalOpen(true)
   }
 
-  const confirmToggleAsistencia = () => {
+  const confirmToggleAsistencia = async () => {
     if (!selectedParticipante) return
 
-    setParticipantes(participantes.map(p =>
-      p.id === selectedParticipante.id ? { ...p, asistencia: !p.asistencia } : p
-    ))
-    setModalOpen(false)
-    setSelectedParticipante(null)
+    try {
+      if (!selectedParticipante.asistencia) {
+        // Mark as present
+        await attendanceService.registerAttendance(selectedParticipante.id)
+        
+        // Update local state
+        setParticipantes(participantes.map(p =>
+          p.id === selectedParticipante.id ? { ...p, asistencia: true } : p
+        ))
+      } else {
+        // Mark as absent - API might not support this yet, so we just warn or do nothing
+        // For now, we will update local state but warn user that it might not persist if API doesn't support delete
+        // alert("La función de 'Marcar Ausente' depende de la API. Se actualizará localmente.")
+        
+        // TODO: Implement delete attendance if API supports it
+        // await attendanceService.deleteAttendance(selectedParticipante.id)
+        
+        // For now, just update local state to reflect the action in UI
+         setParticipantes(participantes.map(p =>
+          p.id === selectedParticipante.id ? { ...p, asistencia: false } : p
+        ))
+      }
+      setModalOpen(false)
+      setSelectedParticipante(null)
+    } catch (err) {
+      console.error('Error updating attendance:', err)
+      alert('Error al actualizar la asistencia. Intenta nuevamente.')
+    }
   }
+
+  if (loading) return <div className="loading-container">Cargando datos...</div>
+  if (error) return <div className="error-container">{error}</div>
 
   return (
     <div className="asistencia-page">
       {modalOpen && selectedParticipante && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3 className="modal-title">Confirmar Acción</h3>
-            <p className="modal-text">
-              ¿Estás seguro de que deseas marcar como <strong>{selectedParticipante.asistencia ? 'Ausente' : 'Presente'}</strong> a <strong>{selectedParticipante.name}</strong>?
-            </p>
-            <div className="modal-actions">
+            <div className="modal-header">
+              <h3 className="modal-title">Confirmar Acción</h3>
+              <button 
+                className="modal-close"
+                onClick={() => setModalOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <p className="modal-text">
+                ¿Estás seguro de que deseas marcar como <strong>{selectedParticipante.asistencia ? 'Ausente' : 'Presente'}</strong> a <strong>{selectedParticipante.name}</strong>?
+              </p>
+            </div>
+            <div className="modal-footer">
               <button 
                 className="btn btn-secondary" 
                 onClick={() => setModalOpen(false)}

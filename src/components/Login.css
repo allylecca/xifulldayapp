@@ -137,14 +137,5 @@
   font-weight: 600;
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-}
 
-.modal-body {
-  color: var(--text-dark);
-}
 

@@ -130,7 +130,7 @@ const Layout = ({ children, setIsAuthenticated }) => {
               </button>
             </div>
             <div className="modal-body">
-              <p style={{ color: 'var(--text-light)' }}>
+              <p className="modal-text">
                 ¿Estás seguro de que deseas cerrar sesión?
               </p>
             </div>

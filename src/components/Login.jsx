@@ -107,13 +107,13 @@ const Login = ({ setIsAuthenticated }) => {
               </button>
             </div>
             <div className="modal-body">
-              <p style={{ marginBottom: '16px', color: 'var(--text-light)' }}>
+              <p className="modal-text" style={{ marginBottom: '16px' }}>
                 Para recuperar tu contraseña, por favor contacta al administrador del sistema.
               </p>
-              <p style={{ marginBottom: '16px', color: 'var(--text-light)' }}>
+              <p className="modal-text" style={{ marginBottom: '16px' }}>
                 <strong>Email:</strong> ally.lecca@icloud.com
               </p>
-              <p style={{ color: 'var(--text-light)' }}>
+              <p className="modal-text">
                 <strong>Teléfono:</strong> +51 961 333 083
               </p>
             </div>
