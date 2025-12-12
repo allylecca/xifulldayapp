@@ -78,6 +78,7 @@ const Asistencia = () => {
       }
       setModalOpen(false)
       setSelectedParticipante(null)
+      setSearchTerm('')
     } catch (err) {
       console.error('Error updating attendance:', err)
       alert('Error al actualizar la asistencia. Intenta nuevamente.')
