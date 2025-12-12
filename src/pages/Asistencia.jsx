@@ -19,18 +19,10 @@ const Asistencia = () => {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const [registrations, attendanceRecords] = await Promise.all([
-        attendanceService.getParticipants(),
-        attendanceService.getAllAttendance()
-      ])
+      const registrations = await attendanceService.getParticipants()
 
       // Map registrations to include attendance status
       const mappedParticipantes = registrations.map(reg => {
-        // Check if this registration ID exists in attendance records
-        // Note: attendanceRecords might be empty or formatted differently depending on API
-        // Assuming attendanceRecords is an array of { registrationId, ... }
-        const isPresent = attendanceRecords.some(record => record.registrationId === reg.id)
-        
         return {
           id: reg.id,
           name: reg.fullName,
@@ -38,7 +30,7 @@ const Asistencia = () => {
           email: reg.email,
           tipo: reg.type === 'PROFESSIONAL' ? 'Profesional' : 'Estudiante',
           certificado: 'No', // API doesn't seem to have certificate status yet
-          asistencia: isPresent
+          asistencia: !!reg.attendance
         }
       })
 

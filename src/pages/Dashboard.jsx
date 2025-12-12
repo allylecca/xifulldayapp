@@ -41,19 +41,14 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const [registrations, attendanceRecords] = await Promise.all([
-        attendanceService.getParticipants(),
-        attendanceService.getAllAttendance()
-      ])
+      const registrations = await attendanceService.getParticipants()
 
       // Process data
       const totalParticipantes = registrations.length
       
       // Determine attendance
-      // attendanceRecords might contain duplicates or multiple check-ins, we should unique by registrationId if needed
-      // But simpler is to check if ID exists in attendanceRecords
-      const attendeeIds = new Set(attendanceRecords.map(r => r.registrationId))
-      const asistieron = attendeeIds.size
+      // Count registrations that have non-null attendance
+      const asistieron = registrations.filter(r => r.attendance).length
       const noAsistieron = totalParticipantes - asistieron
       
       // Breakdown by type
@@ -63,7 +58,7 @@ const Dashboard = () => {
       registrations.forEach(reg => {
         const isStudent = reg.type === 'STUDENT'
         const isProfessional = reg.type === 'PROFESSIONAL'
-        const isPresent = attendeeIds.has(reg.id)
+        const isPresent = !!reg.attendance
 
         if (isStudent) {
           estTotal++
