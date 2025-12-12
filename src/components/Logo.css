@@ -1,0 +1,243 @@
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.logo-container.large {
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logo-container.small {
+  gap: 10px;
+}
+
+.logo-image {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.logo-image-large {
+  max-width: 300px;
+  max-height: 120px;
+}
+
+.logo-image-small {
+  max-width: 180px;
+  max-height: 60px;
+}
+
+.logo-image-icon {
+  max-width: 40px;
+  max-height: 40px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.logo-container.icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon-fallback {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon-fallback .logo-bar {
+  position: absolute;
+  border-radius: 4px;
+}
+
+.logo-icon-fallback .logo-bar-yellow {
+  width: 6px;
+  height: 35px;
+  background: linear-gradient(135deg, #F7AF02 0%, #e09d02 100%);
+  transform: rotate(45deg);
+  top: 3px;
+  left: 17px;
+  box-shadow: 0 2px 4px rgba(247, 175, 2, 0.3);
+}
+
+.logo-icon-fallback .logo-bar-cyan {
+  width: 6px;
+  height: 35px;
+  background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%);
+  transform: rotate(-45deg);
+  bottom: 3px;
+  left: 17px;
+  box-shadow: 0 2px 4px rgba(0, 188, 212, 0.3);
+}
+
+.logo-icon-fallback .logo-bar-blue {
+  width: 4px;
+  height: 40px;
+  background: linear-gradient(180deg, #023E55 0%, #012a3a 100%);
+  border-radius: 3px;
+  right: 6px;
+  top: 0;
+}
+
+.logo-text-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.logo-graphic {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container.large .logo-graphic {
+  width: 80px;
+  height: 80px;
+}
+
+.logo-container.small .logo-graphic {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-bar {
+  position: absolute;
+  border-radius: 4px;
+}
+
+.logo-bar-yellow {
+  width: 8px;
+  height: 50px;
+  background: linear-gradient(135deg, #F7AF02 0%, #e09d02 100%);
+  transform: rotate(45deg);
+  top: 5px;
+  left: 26px;
+  box-shadow: 0 2px 4px rgba(247, 175, 2, 0.3);
+}
+
+.logo-container.large .logo-bar-yellow {
+  width: 10px;
+  height: 65px;
+  top: 7px;
+  left: 35px;
+}
+
+.logo-container.small .logo-bar-yellow {
+  width: 6px;
+  height: 35px;
+  top: 3px;
+  left: 17px;
+}
+
+.logo-bar-cyan {
+  width: 8px;
+  height: 50px;
+  background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%);
+  transform: rotate(-45deg);
+  bottom: 5px;
+  left: 26px;
+  box-shadow: 0 2px 4px rgba(0, 188, 212, 0.3);
+}
+
+.logo-container.large .logo-bar-cyan {
+  width: 10px;
+  height: 65px;
+  bottom: 7px;
+  left: 35px;
+}
+
+.logo-container.small .logo-bar-cyan {
+  width: 6px;
+  height: 35px;
+  bottom: 3px;
+  left: 17px;
+}
+
+.logo-bar-blue {
+  width: 6px;
+  height: 60px;
+  background: linear-gradient(180deg, #023E55 0%, #012a3a 100%);
+  border-radius: 3px;
+  right: 8px;
+  top: 0;
+}
+
+.logo-container.large .logo-bar-blue {
+  width: 8px;
+  height: 80px;
+  right: 10px;
+}
+
+.logo-container.small .logo-bar-blue {
+  width: 4px;
+  height: 40px;
+  right: 6px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.logo-main-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #F7AF02;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.logo-container.large .logo-main-text {
+  font-size: 32px;
+  letter-spacing: 2px;
+}
+
+.logo-container.small .logo-main-text {
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.logo-sub-text {
+  font-size: 10px;
+  font-weight: 500;
+  color: #023E55;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.logo-container.large .logo-sub-text {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.logo-container.small .logo-sub-text {
+  font-size: 8px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 768px) {
+  .logo-container.large .logo-main-text {
+    font-size: 24px;
+  }
+  
+  .logo-container.large .logo-sub-text {
+    font-size: 10px;
+  }
+}
+

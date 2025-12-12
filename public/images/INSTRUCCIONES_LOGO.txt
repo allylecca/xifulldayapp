@@ -1,0 +1,31 @@
+INSTRUCCIONES PARA AGREGAR EL LOGO
+====================================
+
+Para usar la imagen del logo en la aplicación:
+
+1. Coloca tu imagen del logo en esta carpeta: /public/images/
+
+2. Nombra el archivo como uno de estos:
+   - logo.png (recomendado)
+   - logo.svg
+   - logo.jpg
+   - logo.webp
+
+3. El componente Logo buscará automáticamente la imagen en este orden:
+   - logo.png
+   - logo.svg
+   - logo.jpg
+   - logo.webp
+
+4. Si ninguna imagen se encuentra, se mostrará un texto alternativo.
+
+5. Formatos recomendados:
+   - PNG: Para logos con transparencia
+   - SVG: Para mejor calidad en cualquier tamaño
+   - JPG: Para fotos o imágenes sin transparencia
+   - WebP: Para mejor compresión
+
+NOTA: La imagen debe tener fondo transparente o fondo oscuro para que se vea bien
+en la aplicación.
+
+

@@ -1,0 +1,149 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 8px;
+}
+
+/* Bento Grid Layout */
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+/* Card Styles */
+.bento-card {
+  background: var(--bg-white);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Stat Cards */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.stat-icon-container {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: rgba(2, 62, 85, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon-container.warning {
+  background: rgba(247, 175, 2, 0.1);
+}
+
+.stat-icon {
+  font-size: 28px;
+  color: var(--primary-blue);
+}
+
+.stat-icon-container.warning .stat-icon {
+  color: var(--primary-yellow);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--text-light);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary-blue);
+  line-height: 1;
+}
+
+/* Chart Cards */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin-bottom: 20px;
+}
+
+.chart-wrapper {
+  flex: 1;
+  min-height: 250px;
+  position: relative;
+  width: 100%;
+}
+
+/* Responsive Grid */
+@media (min-width: 768px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto; /* 2 rows */
+  }
+
+  /* 
+    Row 1:
+    [ Participantes ] [ Tasa de Asistencia ]
+  */
+  .card-participantes {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  .card-tasa {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  /*
+    Row 2:
+    [ Asistencia General ] [ Tipo Asistencia ]
+  */
+  .card-grafico-asistencia {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    min-height: 350px;
+  }
+
+  .card-tipo-asistencia {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    min-height: 350px;
+  }
+}
+
+/* Desktop optimization for larger screens if needed */
+@media (min-width: 1200px) {
+  .bento-grid {
+    gap: 32px;
+  }
+}

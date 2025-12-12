@@ -1,0 +1,74 @@
+.ajustes-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-card {
+  background: var(--bg-white);
+  border-radius: var(--border-radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+
+.profile-card-content {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 16px;
+}
+
+.profile-avatar-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f59e0b; /* Yellow/Orange from screenshot */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  flex-shrink: 0;
+}
+
+.profile-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-blue); /* Dark blue */
+  margin: 0;
+}
+
+.profile-email {
+  font-size: 18px;
+  color: #64748b; /* Greyish */
+  margin: 0;
+}
+
+.profile-role {
+  font-size: 16px;
+  color: #f59e0b; /* Matching yellow/orange */
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .profile-card-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+  }
+}
+
+
