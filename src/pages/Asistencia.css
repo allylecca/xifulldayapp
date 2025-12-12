@@ -224,4 +224,75 @@
   color: #64748b;
 }
 
+/* Mobile Table Card View */
+@media (max-width: 768px) {
+  .table-container {
+    background: transparent;
+    box-shadow: none;
+    overflow-x: visible;
+  }
 
+  .table {
+    min-width: 100%;
+    display: block;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    display: block;
+    background: var(--bg-white);
+    margin-bottom: 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 16px;
+    border: 1px solid var(--border-color);
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: right;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    padding-top: 16px;
+    display: block; /* Allow button to be full width */
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-light);
+    text-align: left;
+    margin-right: 16px;
+  }
+
+  .table td:last-child::before {
+    display: none; /* Hide "Acción" label */
+  }
+  
+  .table td:empty {
+    display: none;
+  }
+
+  /* Specific adjustment for the button */
+  .table td button {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+    margin-top: 4px;
+  }
+}

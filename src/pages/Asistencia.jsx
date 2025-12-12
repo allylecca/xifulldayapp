@@ -193,18 +193,18 @@ const Asistencia = () => {
           <tbody>
             {filteredParticipantes.map((participante) => (
               <tr key={participante.id}>
-                <td>{participante.name}</td>
-                <td>{participante.dni}</td>
-                <td>{participante.email}</td>
-                <td>
+                <td data-label="Nombre">{participante.name}</td>
+                <td data-label="DNI">{participante.dni}</td>
+                <td data-label="Email">{participante.email}</td>
+                <td data-label="Tipo">
                   <span className={`badge ${participante.tipo === 'Profesional' ? 'badge-purple' : 'badge-info'}`}>{participante.tipo}</span>
                 </td>
-                <td>
+                <td data-label="Asistencia">
                   <span className={`badge ${participante.asistencia ? 'badge-success' : 'badge-danger'}`}>
                     {participante.asistencia ? 'Presente' : 'Ausente'}
                   </span>
                 </td>
-                <td>
+                <td data-label="Acción">
                   {!participante.asistencia && (
                     <button
                       className="btn btn-sm btn-primary"
